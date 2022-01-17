@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+    <h4 class="mt-4">{{ student.get_student_full_name|title }}&nbsp;&nbsp;<span class="badge badge-warning">{{student.grade}}</span></h4>
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><a href="{% url 'listings:student_list' %}">Students&nbsp;</a>  / {{ student.get_student_full_name|title }}</li>
+    </ol>
+    <div class='row mb-3 mt-1'>
+        <div class='col-md-2 col-sm-12'>
+            {% if student.user.imageuser.image %}
+                <img src="{{student.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}"> 
+            {% else %}
+                <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}">
+            {% endif %}
+        </div>
+        <div class='col-10'>
+            <blockquote class="blockquote mb-0">
+                    <p class='card-text font-italic'><small class='text-muted'>Full Name:&nbsp;</small><small>{{ student.get_student_full_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>username:&nbsp;</small><small>{{ student.given_username}}</small></p>
+                    <hr>
+                    {% for parent in parent_for_student %}
+                        <p class='card-text font-italic'>
+                            <small class='text-muted'>Father Name:&nbsp;</small>
+                            <small><a href="{% url 'listings:parent_detail'  parent_username=parent.given_username %}">{{parent.get_father_full_name|title }}</a></small>
+                            <br>
+                            <small class='text-muted'>Father Mobile:&nbsp;</small>
+                            <small>{{parent.father_mobile }}</small>
+                        </p>
+                    {% endfor %}
+            </blockquote>
+        </div>
+    </div>
+
+
+    
+<div class="accordion" id="accordionExample">
+    
+    <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#personalinfo" aria-expanded="true" aria-controls="personalinfo">
+                        Personal Informations
+                        </button>
+                    </h2>
+                </div>
+        <!--One -->
+            <div id="personalinfo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p class='card-text font-italic'><small class='text-muted'>Full Name:&nbsp;</small><small>{{ student.get_student_full_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>First Name:&nbsp;</small><small>{{ student.first_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>Second Name:&nbsp;</small><small>{{ student.second_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Name:&nbsp;</small><small>{{ student.last_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Age:&nbsp;</small><small>{{ student.get_student_age }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Gender:&nbsp;</small><small>{{ student.gender|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Mobile:&nbsp;</small><small>{{ student.mobile }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Email:&nbsp;</small><small>{{ student.email }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Status:&nbsp;</small><small>{{ student.status|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Date Born:&nbsp;</small><small>{{ student.date_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Country Born:&nbsp;</small><small>{{ student.country_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Nationality:&nbsp;</small><small>{{ student.nationality|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Passport Number:&nbsp;</small><small>{{ student.passport_number }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Address:&nbsp;</small><small>{{ student.address|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Skills:&nbsp;</small><small>{{ student.skills|title }}</small></p>
+                    <hr>
+                    <footer class='text-muted'>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add at:&nbsp;</small><small>{{ student.created_at}}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add by:&nbsp;</small><small>{{ student.created_by }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update at:&nbsp;</small><small>{{ student.updated_at}}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update by:&nbsp;</small><small>{{ student.updated_by }}</small></p>
+                    </footer>
+                </blockquote>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- tow -->
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#Marks" aria-expanded="false" aria-controls="Marks">
+                Marks
+                </button>
+            </h2>
+            </div>
+            <div id="Marks" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body  bg-dark">
+
+
+
+                    {% for subject in student.grade.get_subjects_for_grade %}
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Subject &nbsp;:&nbsp;<strong>{{ subject.get_subject_full_title|title }} </strong> Mark Table
+                            </div>
+                            {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                <div class='ml-4 mt-3 '>
+                                    <a class='btn btn-sm btn-info'  href="{% url 'listings:mark_create' student_username=student.given_username  subject_slug=subject.slug %}"><i class="fas fa-plus-circle"></i></i></a>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                
+                                
+                                
+                                    <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Exam Name</th>
+                                                <th>Mark_Value</th>
+                                                <th>Full_Value</th>
+                                                <th>Exam_Date</th>
+                                                <th>Note</th>
+                                                <th>Created date</th>
+                                                {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                                <th>Action</th>
+                                                {% endif %}
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Exam Name</th>
+                                                <th>Mark_Value</th>
+                                                <th>Full_Value</th>
+                                                <th>Exam_Date</th>
+                                                <th>Note</th>
+                                                <th>Created date</th>
+                                                {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                                <th>Action</th>
+                                                {% endif %}
+                                            </tr>
+                                        </tfoot>
+                                        <p>Averge marks for subject {{ subject|title}}:{{mark_value__avg}}{{subject.get_average_of_marks_for_subject}}</p>
+                                        <tbody>
+                                            {% for mark in subject.get_marks_for_subject %}
+                                            <tr>
+                                                <td>{{mark.exam_name|title}}</a></td>
+                                                <td>{{mark.mark_value}}</td>
+                                                <td>{{mark.full_value}}</a></td> 
+                                                <td>{{mark.exam_date}}</td>
+                                                <td>{{mark.note}}</td>
+                                                <td>{{mark.created_at|timesince }} ago</td>
+                                                {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm  btn-circle m-1" href="{% url 'listings:mark_edit' student_username=student.given_username  subject_slug=subject.slug mark_id=mark.id %}"><i class="far fa-edit"></i></a>
+                                                        <a class="btn btn-danger btn-sm btn-circle m-1" href="#"><i class="far fa-trash-alt"></i></a>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% empty %}
+                                                <p class='text-danger'>Sorry no marks for this subject: <strong>{{subject.get_subject_full_title }}</strong> in this table</p>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                {% endfor %}
+
+            </div>
+            </div>
+        </div>
+
+
+        <!-- three-->
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Personal Message from teachers
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse bg-secondary" aria-labelledby="headingThree" data-parent="#accordionExample">
+                 {% for mes in message_teacher_to_student %}
+                    <div class='b-2  m-3'>
+                   
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ mes.message_subject }}</h5>
+                                <small><p class="card-subtitle mb-2 text-muted"> From Teacher:&nbsp;<strong>{{mes.teacher.get_teacher_full_name|title}}</strong>  <br>{{mes.created_at|timesince}}&nbsp;ago </p></small>
+                                <p class="card-text">{{mes.message_text}}</p>  
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!---->
+
+
+    </div>
+  
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+    <div class="container-fluid">
+        
+        
+        
+        
+        <ol class="breadcrumb mb-4 mt-5">
+            <li class="breadcrumb-item active">School Admins</li>
+        </ol>
+      
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                School Admins Table
+            </div>
+            <div class='ml-4 mt-3 '>
+                <a class='btn btn-sm btn-info'  href="{% url 'users:schadmin_signup' %}"><i class="fas fa-user-plus"></i></a>
+            </div>
+            <br>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Age</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Created date</th>
+                                {% if request.user.is_superuser %}
+                                <th>Action</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                              
+                                <th>Age</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Created date</th>
+                                {% if request.user.is_superuser  %}
+                                <th>Action</th>
+                                {% endif %}
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                             {% for schadmin in schadmins %}
+                            <tr>
+                                <td><a href="{% url 'listings:schadmin_detail' schadmin_username=schadmin.get_schadmin_username %}">{{ schadmin.get_schadmin_full_name|title }}</a></td>
+                                <td>{{schadmin.user.username}}</td>
+                                <td>{{schadmin.get_schadmin_age}}</td>
+                                <td>{{schadmin.mobile}}</td>
+                                <td>{{schadmin.email}}</td>
+                                <td>{{schadmin.created_at}}</td>
+                               {% if request.user.is_superuser %}
+                                <td>
+                                    <a class="btn btn-info btn-sm  btn-circle m-1" href="{% url 'users:schadmin_edit' schadmin_username=schadmin.get_schadmin_username %}"><i class="far fa-edit"></i></a>
+                                    <a class="btn btn-danger btn-sm btn-circle m-1" href="{% url 'users:schadmin_delete_ask' schadmin_username=schadmin.get_schadmin_username %}"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                                <p class='text-danger'>Sorry no School Admin in this table</p>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+
+                    <!-- pagination-->
+                    {% if schadmins.has_other_pages %}
+                        <div>
+                            <nav aria-label="Page navigation conatiner"></nav>
+                                <ul class="pagination pagination-sm justify-content-center">
+                                    
+                                    {% if schadmins.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ schadmins.previous_page_number }}">
+                                                &laquo; Previous 
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page_number in schadmins.paginator.page_range %}
+                                        {% if page_number == schadmins.number %}
+                                            <li  class="page-item active">
+                                                <span class="page-link">{{ page_number }}
+                                                    <span class="sr-only">(current)</span>
+                                                </span>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if schadmins.has_next %}
+                                        <li class="page-item" >
+                                            <a class="page-link" href="?page={{ schadmins.next_page_number }}">
+                                                Next &raquo;
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endif %}
+                    <!-- pagination end-->
+
+
+                </div>
+            </div>
+        </div>
+        
+    </div>   
+{% endblock %}

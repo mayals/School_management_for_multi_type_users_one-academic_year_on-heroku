@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+<h5 class="mt-4">{{ title }}&nbsp;&nbsp;</h5>
+
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active"><span><strong>{{ user.student.get_student_full_name|title }}</strong> profile</span></li>
+</ol>
+
+    <div class="card card-body mb-5">
+    <div class='mb-1'><small><span class="text-muted float-right">Last Login:&nbsp;&nbsp;{{user.last_login|timesince}} ago </span><small></div>
+        <div class='row'>
+            <div class="col-md-2 text-center">
+                {% if request.user.imageuser.image %}
+                    <img src="{{request.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{teacher.get_student_full_name}}">
+                {% else %}
+                    <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{teacher.get_student_full_name}}">
+                {% endif %}
+            <a  href="{% url 'users:image_user_update' user_username=user.username %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update Image</a>
+            </div>
+           
+            <div class="col-md-10">
+                <div class="card-header">
+                    <h5 class="card-title">Personal Informations</h5>
+                </div>    
+                <blockquote class="blockquote mb-0">
+                    <p class='card-text font-italic'><small class='text-muted'>Full Name:&nbsp;</small><small>{{ user.student.get_student_full_name|title }}</small></p>
+                    <p class='card-text text-info font-italic'><small class='text-muted'>username:&nbsp;</small><small><strong>{{ user.username}}</strong></small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>First Name:&nbsp;</small><small>{{ user.student.first_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>Second Name:&nbsp;</small><small>{{ user.student.second_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Name:&nbsp;</small><small>{{ user.student.last_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Age:&nbsp;</small><small>{{ user.student.get_student_age }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Gender:&nbsp;</small><small>{{ user.student.gender|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Mobile:&nbsp;</small><small>{{ user.student.mobile }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Email:&nbsp;</small><small>{{ user.student.email }}</small></p>
+
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Date Born:&nbsp;</small><small>{{ user.student.date_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Country Born:&nbsp;</small><small>{{ user.student.country_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Nationality:&nbsp;</small><small>{{ user.student.nationality|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Passport Number:&nbsp;</small><small>{{ user.student.passport_number }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Address:&nbsp;</small><small>{{ user.student.address|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Skills:&nbsp;</small><small>{{ user.student.skills|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add at:&nbsp;</small><small>{{user.student.created_at }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add by:&nbsp;</small><small>{{ user.student.created_by }}</small></p>
+                    <br>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Login:&nbsp;</small><small>{{ request.user.last_login }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update at:&nbsp;</small><small>{{ user.student.updated_at }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update by:&nbsp;</small><small>{{ user.student.updated_by }}</small></p>
+                </blockquote>
+            </div>
+        </div>
+    </div> 
+
+    <div class='row'>   
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                    Grade
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                         <p><a href="{%  url 'listings:grade_detail'  grade_slug=user.student.grade.slug  %}">{{ user.student.grade.name }}</a></p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                Parent
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        {% for parent in parent_for_student %}
+                        <p class='card-text font-italic'>
+                            <small class='text-muted'>Father Name:&nbsp;</small>
+                            <small><a href="{% url 'listings:parent_detail'  parent_username=parent.given_username %}">
+                                {{parent.get_father_full_name|title }}
+                            </a></small>
+                            <br>
+                            <small class='text-muted'>Father Mobile:&nbsp;</small>
+                            <small>{{parent.father_mobile }}</small>
+                        </p>
+                        {% empty %}
+                        <li> No parent for student {{ request.user.first_name|title }}.</li>
+                        {% endfor %}
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 mb-30">
+            <div class="card card-box">
+                <div class="card-header">
+                    Attendance
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ 
+</div>
+
+
+
+
+{% endblock content %}

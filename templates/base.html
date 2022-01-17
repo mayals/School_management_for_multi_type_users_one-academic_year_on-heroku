@@ -1,0 +1,531 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    
+ 
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' rel="stylesheet"  %}">
+
+    <!-- mystyle CSS -->
+    <link href="{% static 'css/styles.css' %}"  rel="stylesheet"> 
+    <link href="{% static 'css/mystyle.css' %}" rel="stylesheet" type="text/css">
+    <!-- title -->
+    <title>Happy School</title>
+   
+  </head>
+
+
+  <body class="sb-nav-fixed">
+
+
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'listings:index' %}"><span><i class="fas fa-school"></i></span> Happy School</a>
+            <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+            
+            
+            <!-- Navbar-->
+            <ul class="navbar-nav  ml-md-0 my-l-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        {% if request.user.is_authenticated %} 
+                            
+                            <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome <strong>{{request.user.first_name|title }}</strong></p>
+                            <a class="dropdown-item" href="{% url 'users:profile' %}"><i class="far fa-id-badge"></i>&nbsp;Profile</a>
+                            
+                            {% if request.user.schooladmin.is_schadmin %}
+                                <a class="dropdown-item" href="{% url 'users:schadmin_dashboard' schadmin_username=request.user.username %}"><i class="fas fa-tasks"></i>&nbsp;Dashboard</a>
+                            
+                            {% elif request.user.teacher.is_teacher %}
+                                <a class="dropdown-item" href="{% url 'users:teacher_dashboard' teacher_username=request.user.username %}"><i class="fas fa-tasks"></i></i>&nbsp;Dashboard</a>
+                            
+                            {% elif request.user.student.is_student %}
+                                <a class="dropdown-item" href="{% url 'users:student_dashboard' student_username=request.user.username  %}"><i class="fas fa-tasks"></i></i>&nbsp;Dashboard</a>
+                            
+                            {% elif request.user.is_parent %}
+                                <a class="dropdown-item" href="{% url 'users:parent_dashboard'  parent_username=request.user.username %}"><i class="fas fa-tasks"></i></i>&nbsp;Dashboard</a>
+                            
+                            {% elif request.user.is_superuser %}
+                                <a class="dropdown-item" href="{% url 'users:webadmin_dashboard' webadmin_username=request.user.username %}"><i class="fas fa-tasks"></i></i>&nbsp;Dashboard</a> 
+                            
+                            {% endif %}
+                            <hr>
+                            <a class="dropdown-item" href="{% url 'users:logout_user' %}"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+                            
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'users:login_user' %}"><i class="fas fa-sign-in-alt"></i>&nbsp;Login</a>    
+                        
+                        
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+
+
+<div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                         
+                            <div class="sb-sidenav-menu-heading">Administrator</div>
+
+                        <!--- start of school admin -->    
+                            {% if request.user.is_authenticated and request.user.schooladmin.is_schadmin %}
+                            <!--School Admin Dashboard -->   
+                            <a class="nav-link" href="{% url 'users:schadmin_dashboard'  schadmin_username=request.user.username %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    School Admin Dashboard
+                                </a>
+                            <!-- -->
+
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            
+                            <!-- Chart-->
+                                <a class="nav-link" href="{% url 'listings:charts_all' %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                    Charts
+                                </a>
+                            <!-- -->
+
+                            <!--Layout-->     
+                            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                               Layout
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'listings:grade_list' %}">Grade List</a>
+                                    <a class="nav-link" href="{% url 'listings:subject_list' %}">Subject List</a>
+                                </nav>
+                            </div>
+                            <!---->
+
+
+                            <!--tables -->
+                            <a class="nav-link " href="#" data-toggle="collapse" data-target="#collapseLists" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLists" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'listings:user_list' %}">User List</a>
+                                    <a class="nav-link" href="{% url 'listings:teacher_list' %}">Teacher List</a>
+                                    <a class="nav-link" href="{% url 'listings:student_list' %}">Student List</a>
+                                    <a class="nav-link" href="{% url 'listings:parent_list' %}">Parent List</a>
+                                    <a class="nav-link" href="#">Employee List</a>
+                                </nav>
+                            </div>
+                            <!---->
+
+
+                            <!--  Account -->
+                                <a class="nav-link" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="collapsePages">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
+                                    Account
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {% if request.user.is_authenticated %} 
+                                            <a class="nav-link" href="{% url 'users:logout_user' %}">Logout</a>
+                                        {% else %}
+                                            <a class="nav-link" href="{% url 'users:login_user' %}">Login</a>    
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            <!---->   
+                                    
+
+                            <!--Pages-->
+                            <div class="sb-sidenav-menu-heading">Pages</div>
+                             <a class="nav-link" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                About Us
+                            </a>
+                            <a class="nav-link" href="{% url 'listings:Email_us' %}">
+                                <div class="sb-nav-link-icon"><i class="far fa-envelope"></i></div>
+                               Contact Us
+                            </a>
+                           
+                        </div>
+                    </div>
+
+                    <!--end of school admin-->
+<!--#####################################################################-->
+
+
+
+<!--######################### start teacher dashboard #################################-->
+                            {% elif request.user.is_authenticated and request.user.teacher.is_teacher  %}
+                                <a class="nav-link" href="{% url 'users:teacher_dashboard' teacher_username=request.user.username %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Teacher Dashboard
+                                </a>
+                               <!-- -->
+
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            
+                            <!-- Chart-->
+                                <a class="nav-link" href="{% url 'listings:charts_all' %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                    Charts
+                                </a>
+                            <!-- -->
+
+                            <!--Layout-->     
+                            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                               Layout
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'listings:grade_list' %}">Grade List</a>
+                                    <a class="nav-link" href="{% url 'listings:subject_list' %}">Subject List</a
+                                </nav>
+                            </div>
+                            <!---->
+
+
+                            <!--tables -->
+                            <a class="nav-link " href="#" data-toggle="collapse" data-target="#collapseLists" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLists" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'listings:schadmin_list' %}">School Admin List</a>
+                                    <a class="nav-link" href="{% url 'listings:teacher_list' %}">Teacher List</a>
+                                       <a class="nav-link" href="#">Employee List</a>
+                                    <a class="nav-link" href="{% url 'listings:student_list' %}">Student List</a>
+                                    <a class="nav-link" href="{% url 'listings:parent_list' %}">Parent List</a>
+                                    <a class="nav-link" href="#">Employee List</a>
+                                </nav>
+                            </div>
+                            <!---->
+
+
+                            <!--  Account -->
+                                <a class="nav-link" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="collapsePages">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
+                                    Account
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {% if request.user.is_authenticated %} 
+                                            <a class="nav-link" href="{% url 'users:logout_user' %}">Logout</a>
+                                        {% else %}
+                                            <a class="nav-link" href="{% url 'users:login_user' %}">Login</a>    
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            <!---->   
+                                    
+
+                            <!--Pages-->
+                            <div class="sb-sidenav-menu-heading">Pages</div>
+                             <a class="nav-link" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                About Us
+                            </a>
+                            <a class="nav-link" href="{% url 'listings:Email_us' %}">
+                                <div class="sb-nav-link-icon"><i class="far fa-envelope"></i></div>
+                               Contact Us
+                            </a>
+                           
+                        </div>
+                    </div>
+
+                    <!--end of teacher-->
+<!--#####################################################################-->
+
+
+<!--######################### start student dashboard #################################-->
+                            {% elif request.user.is_authenticated and request.user.student.is_student  %}
+                                <a class="nav-link" href="{% url 'users:student_dashboard' student_username=request.user.username %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Student Dashboard
+                                </a>
+
+                                <div class="sb-sidenav-menu-heading">Interface</div>
+                        
+
+                            
+
+
+                            <!--tables -->
+                            <a class="nav-link " href="#" data-toggle="collapse" data-target="#collapseLists" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                My Pages
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLists" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'listings:student_detail_marks' student_username=request.user.username %}">My Mark</a>
+                                    <a class="nav-link" href="{% url 'listings:student_detail_attendance' student_username=request.user.username %}">My Attendance</a>
+                                    <a class="nav-link" href="{% url 'listings:student_detail_messages' student_username=request.user.username %}">My Messages</a>
+                                    <a class="nav-link" href="{% url 'users:profile' %}">My Profile</a>
+                                </nav>
+                            </div>
+                            <!---->
+
+
+                            <!--  Account -->
+                                <a class="nav-link" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="collapsePages">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
+                                    Account
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {% if request.user.is_authenticated %} 
+                                            <a class="nav-link" href="{% url 'users:logout_user' %}">Logout</a>
+                                        {% else %}
+                                            <a class="nav-link" href="{% url 'users:login_user' %}">Login</a>    
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            <!---->   
+                                    
+
+                            <!--Pages-->
+                            <div class="sb-sidenav-menu-heading">Pages</div>
+                             <a class="nav-link" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                About Us
+                            </a>
+                            <a class="nav-link" href="{% url 'listings:Email_us' %}">
+                                <div class="sb-nav-link-icon"><i class="far fa-envelope"></i></div>
+                               Contact Us
+                            </a>
+                           
+                        </div>
+                    </div>
+
+                    <!--end of student dashboard-->
+<!--#####################################################################-->
+
+
+
+
+
+<!--######################### start parent dashboard #################################-->
+                            {% elif request.user.is_authenticated and request.user.parent.is_parent  %}
+                                <a class="nav-link" href="{% url 'users:parent_children' parent_username=request.user.username %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Parent Dashboard
+                                </a>
+
+                                <div class="sb-sidenav-menu-heading">Interface</div>
+                        
+
+                            <!--  Account -->
+                                <a class="nav-link" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="collapsePages">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
+                                    Account
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {% if request.user.is_authenticated %} 
+                                            <a class="nav-link" href="{% url 'users:logout_user' %}">Logout</a>
+                                        {% else %}
+                                            <a class="nav-link" href="{% url 'users:login_user' %}">Login</a>    
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            <!---->   
+                                    
+
+                            <!--Pages-->
+                            <div class="sb-sidenav-menu-heading">Pages</div>
+                             <a class="nav-link" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                About Us
+                            </a>
+                            <a class="nav-link" href="{% url 'listings:Email_us' %}">
+                                <div class="sb-nav-link-icon"><i class="far fa-envelope"></i></div>
+                               Contact Us
+                            </a>
+                           
+                        </div>
+                    </div>
+
+                    <!--end of parent dashboard-->
+<!--#####################################################################-->
+
+                          
+
+
+
+<!--######################### start webadmin dashboard #################################-->
+                            {% elif request.user.is_authenticated and request.user.is_superuser %}
+                            <a class="nav-link" href=" {% url 'users:webadmin_dashboard' webadmin_username=request.user.username %}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Web Admin Dashboard
+                            </a>
+
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            
+                            <!-- Chart-->
+                                <a class="nav-link" href="{% url 'listings:charts_all' %}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                    Charts
+                                </a>
+                            <!-- -->
+
+                            <!--  Account -->
+                                <a class="nav-link" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="collapsePages">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
+                                    Account
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        {% if request.user.is_authenticated %} 
+                                            <a class="nav-link" href="{% url 'users:logout_user' %}">Logout</a>
+                                        {% else %}
+                                            <a class="nav-link" href="{% url 'users:login_user' %}">Login</a>    
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            <!---->
+
+                           
+                            <!--tables -->
+                            <a class="nav-link " href="#" data-toggle="collapse" data-target="#collapseLists" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLists" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'listings:user_list' %}">User List</a>
+                                    <a class="nav-link" href="{% url 'listings:schadmin_list' %}">School Admin List</a>
+                                    <a class="nav-link" href="{% url 'listings:teacher_list' %}">Teacher List</a>
+                                    <a class="nav-link" href="{% url 'listings:student_list' %}">Student List</a>
+                                    <a class="nav-link" href="{% url 'listings:parent_list' %}">Parent List</a>
+                                    <a class="nav-link" href="#">Employee List</a>
+                                </nav>
+                            </div>
+                            <!---->
+                            
+
+                               
+                                    
+
+                            <!--Pages-->
+                            <div class="sb-sidenav-menu-heading">Pages</div>
+                             <a class="nav-link" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                About Us
+                            </a>
+                            <a class="nav-link" href="{% url 'listings:Email_us' %}">
+                                <div class="sb-nav-link-icon"><i class="far fa-envelope"></i></div>
+                               Contact Us
+                            </a>
+                           
+                        </div>
+                    </div>
+
+                    <!--end of webadmin-->
+<!--#####################################################################-->
+                {% endif %}
+                    
+            <!--  start footer of side list -->
+            <div class="sb-sidenav-footer ">
+                {% if request.user.is_authenticated and request.user.imageuser.image %}
+                <div class="small">
+                    Welcome&nbsp;&nbsp;{{request.user.first_name|title}}&nbsp;&nbsp;
+                    <img class='img-thumbnail rounded'  src='{{ request.user.imageuser.image.url }}' style='width:50px; height:50px;'  alt='{{user.username}}'>
+                </div>
+                {% else %}
+                <div class="small">
+                    <small><i class="far fa-envelope"></i>&nbsp;&nbsp;<italic>happyschool@gmail.com</italic></small>
+                </div>
+                {% endif %}
+            </div>
+            <!--  end footer of side list -->
+        </nav>
+    </div>
+
+<!-- #################################################################################### -->
+
+    <div id="layoutSidenav_content">
+                
+                <main>
+                {% block content %}
+
+                {% endblock content %}
+                </main>
+                
+
+
+                <!--  start footer of main list -->
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container">
+                        <div class="align-items-center small">     
+                            <center>
+                                <p class="text-muted">
+                                Copyright&copy;{% now 'Y' %},Happy School<br>All rights reserved 
+                                </p>
+                            </center>
+                        </div>
+                    </div>
+                </footer>
+                <footer class="footer navbar-dark bg-dark small mb-0 mb-0">
+                        <div class="text-muted mr-3 float-right">
+                            <small>Developed by:&nbsp;<a href='https://github.com/mayals'><i class="fab fa-github"></i><a>@mayals</small>&nbsp;&nbsp;
+                            <small><a href="mailto:developer.web.dj@gmail.com"><i class="far fa-envelope"></i>&nbsp;</a>developer.web.dj@gmail.com</small> 
+                        </div>    
+                </footer>
+                <!--  end footer of main list -->
+
+
+            </div>
+        </div>
+
+
+        <!-- Optional JavaScript; choose one of the two! -->
+
+        <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+        <script type="text/javascript" src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+      
+        <!-- Option 2: jQuery, Popper.js, and Bootstrap JS -->
+        {% comment %} <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script> {% endcomment %}
+        
+        
+
+        <!-- Fontawesome javascript  -->
+        <script src="{% static 'js/fontawesome.min.js' %}"  type="text/javascript"></script>
+        
+
+        <!-- Add active state to sidbar nav links-->
+        <script src="{% static 'js/scripts.js' %}"></script>
+
+
+  </body>
+</html>
+
+
+
+

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+        {% if academicyear %}
+           <h5 class='text-secondary font-italic'>{{academicyear.name }}</h5>
+        {% endif %} 
+
+
+        <h5 class="mt-4"> Student Dasboard</h5>
+        
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Student Dasboard</li>
+        </ol>
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                
+                <div class="card-header">
+                        <i class="fas fa-users mr-1"></i>
+                        Student Manager / {{ student.get_student_full_name|title }}&nbsp;<span class="p-2 badge badge-info">{{student.grade}}</span>
+                </div>
+                <div class="card-body"> 
+                   
+                    <div class='row'>    
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-darkblue text-white mb-4">
+                                <div class="card-body text-center"><strong>My Mark</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-dark" href={% url 'listings:student_detail_marks' student_username=student.given_username %}>&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-warning text-white mb-4">
+                                <div class="card-body text-center"><strong>My Attendance</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-dark" href={% url 'listings:student_detail_attendance' student_username=student.given_username %}>&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a> 
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-orange text-white mb-4">
+                                <div class="card-body text-center"><strong>My Messages</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-dark" href={% url 'listings:student_detail_messages' student_username=student.given_username %}>&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a> 
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body text-center"><strong>My Profile</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-dark" href={% url 'users:student_profile' %}>&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a> 
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+ 
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+    <h4 class="mt-4">{{ grade.name|title }}&nbsp;&nbsp;</h4>
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><a href="{% url 'listings:grade_list' %}">Grades&nbsp;</a>  / {{ grade.name|title }}</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Grade Information
+        </div>
+        <div class="card-body">
+            <p class='card-text font-italic'><small class='text-muted'>Name:&nbsp;</small>{{ grade.name|title }}</p>
+            <p class='card-text font-italic'><small class='text-muted'>Descripton:&nbsp;</small>{{ grade.description|title }}</p>
+            <p class='card-text font-italic'><small class='text-muted'>Created at:&nbsp;</small>{{ grade.created_at|title }}</p>
+        </div>
+    </div> 
+    
+
+
+
+
+
+        <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <strong>{{ grade.name|title }}</strong>&nbsp;&nbsp; - Teachers Table
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class='text-center'>
+                            <th>Teacher name</th>
+                            <th>Created at</th>
+                            <th>Created by</th>
+                            
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class='text-center'>
+                            <th>Teacher name</th>
+                            <th>Created at</th>
+                            <th>Created by</th>
+                            
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for teacher in teachers_for_grade %}
+                        <tr class='text-center'>
+                            <td>
+                                <a href="{% url 'listings:teacher_detail' teacher_username=teacher.given_username %}">
+                                    {{teacher.get_teacher_full_name}}
+                                </a>                      
+                            </td>
+                            <td>{{ teacher.created_at|timesince }}</td>
+                            <td>{{ teacher.created_by }}</td>
+                            
+                        </tr>
+                        {% empty %}
+                            <p class='text-danger'>Sorry, no teacher in {{ grade.name }}.</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- pagination-->
+                {% if teachers_for_grade.has_other_pages %}
+                    <div>
+                        <nav aria-label="Page navigation conatiner"></nav>
+                            <ul class="pagination pagination-sm justify-content-center">
+                                {% if teachers_for_grade.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ teachers_for_grade.previous_page_number }}">
+                                            &laquo; Previous 
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for page_number in teachers_for_grade.paginator.page_range %}
+                                    {% if page_number == teachers_for_grade.number %}
+                                        <li  class="page-item active">
+                                            <span class="page-link">{{ page_number }}
+                                                <span class="sr-only">(current)</span>
+                                            </span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if teachers_for_grade.has_next %}
+                                    <li class="page-item" >
+                                        <a class="page-link" href="?page={{ teachers_for_grade.next_page_number }}">
+                                            Next &raquo;
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+                <!-- pagination end-->
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <strong>{{ grade.name|title }}</strong>&nbsp;&nbsp; - Students Table
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class='text-center'>
+                            <th>Student name</th>
+                            <th>Created at</th>
+                            <th>Created by</th>
+                            
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class='text-center'>
+                            <th>Student name</th>
+                            <th>Created at</th>
+                            <th>Created by</th>
+                            
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for student in grade.get_students_for_grade %}
+                        <tr class='text-center'>
+                            <td>
+                                <a href="{% url 'listings:student_detail' student_username=student.given_username  %}">
+                                    {{student.get_student_full_name}}
+                                </a>
+                                                
+                            </td>
+                            <td>{{ student.created_at|timesince }}</td>
+                            <td>{{ student.created_by }}</td>
+                            
+                        </tr>
+                        {% empty %}
+                            <p class='text-danger'>Sorry, no student in {{ grade.name }}.</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- pagination-->
+                {% if students.has_other_pages %}
+                    <div>
+                        <nav aria-label="Page navigation conatiner"></nav>
+                            <ul class="pagination pagination-sm justify-content-center">
+                                {% if students.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ students.previous_page_number }}">
+                                            &laquo; Previous 
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for page_number in students.paginator.page_range %}
+                                    {% if page_number == students.number %}
+                                        <li  class="page-item active">
+                                            <span class="page-link">{{ page_number }}
+                                                <span class="sr-only">(current)</span>
+                                            </span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if grades.has_next %}
+                                    <li class="page-item" >
+                                        <a class="page-link" href="?page={{ students.next_page_number }}">
+                                            Next &raquo;
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+                <!-- pagination end-->
+
+            </div>
+        </div>
+    </div>
+        
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <strong>{{ grade.name|title }}</strong>&nbsp;&nbsp; - Subjects Table
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class='text-center'>
+                            <th>Subject Title</th>
+                            <th>Created at</th>
+                            <th>Created by</th>
+                            
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class='text-center'>
+                            <th>Subject Title</th>
+                            <th>Created at</th>
+                            <th>Created by</th>
+                            
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for subject in grade.get_subjects_for_grade %}
+                        <tr class='text-center'>
+                            <td>
+                                <a href="{% url 'listings:subject_detail' subject_slug=subject.slug %}">
+                                    {{ subject.get_subject_full_title|title }}
+                                </a>
+                            </td>  
+                            <td>{{ subject.created_at|timesince }}</td>
+                            <td>{{ subject.created_by }}</td>                     
+                        </tr>
+                        {% empty %}
+                            <p class='text-danger'>Sorry, no subject in {{ grade.name }}.</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- pagination-->
+                {% if subjects.has_other_pages %}
+                    <div>
+                        <nav aria-label="Page navigation conatiner"></nav>
+                            <ul class="pagination pagination-sm justify-content-center">
+                                {% if students.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ sbjects.previous_page_number }}">
+                                            &laquo; Previous 
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for page_number in subjects.paginator.page_range %}
+                                    {% if page_number == subjects.number %}
+                                        <li  class="page-item active">
+                                            <span class="page-link">{{ page_number }}
+                                                <span class="sr-only">(current)</span>
+                                            </span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if subjects.has_next %}
+                                    <li class="page-item" >
+                                        <a class="page-link" href="?page={{ subjects.next_page_number }}">
+                                            Next &raquo;
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+                <!-- pagination end-->
+
+            </div>
+        </div>
+    </div>
+            
+    <div class='row'>   
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                    Grade
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ grade.name|title }}</p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                Subjects
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <ul>
+                            {% for subject in subjects_for_grade %}
+                                <li><a href="{%  url 'listings:student_subject_mark_detail'  student_username=student.given_username  subject_slug=subject.slug  %}">{{ subject.title }}</a></li>
+                            {%empty %}
+                                <li>Sorry, no subject in {{ grade.name|title}}.</li>
+                            {% endfor %}  
+                        </ul> 
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 mb-30">
+            <div class="card card-box">
+                <div class="card-header">
+                    Quote
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+   
+
+
+
+
+   
+
+
+
+</div>
+{% endblock %}

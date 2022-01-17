@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+          
+
+
+           
+
+<ol class="breadcrumb mb-4 mt-5">
+    <li class="breadcrumb-item active"><a href="{% url 'listings:schadmin_list' %}">School Admins List&nbsp;</a>  / {{ schadmin.get_schadmin_full_name|title }}</li>
+</ol>
+    
+
+    <div class="card card-body mb-5">
+        <div class='row'>
+           <div class="col-md-2 text-center">
+                {% if schadmin.user.imageuser.image %}
+              
+                    <img src="{{schadmin.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{schadmin.get_schadmin_full_name}}">
+                {% else %}
+                    <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{schadmin.get_schadmin_full_name}}">
+                {% endif %}
+               
+            </div>
+
+            <div class="col-md-10">
+                <div class="card-header">
+                    <h5 class="card-title">Personal Informations</h5>
+                </div>    
+                <blockquote class="blockquote mb-0">
+                    <p class='card-text font-italic'><small class='text-muted'>Full Name:&nbsp;</small><small>{{ schadmin.get_schadmin_full_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>First Name:&nbsp;</small><small>{{ schadmin.first_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>Second Name:&nbsp;</small><small>{{ schadmin.second_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Name:&nbsp;</small><small>{{ schadmin.last_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Age:&nbsp;</small><small>{{schadmin.get_schadmin_age }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Gender:&nbsp;</small><small>{{ schadmin.gender|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Mobile:&nbsp;</small><small>{{ schadmin.mobile }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Email:&nbsp;</small><small>{{ schadmin.email }}</small></p>
+
+                    <hr>
+                   
+                    <p class='card-text font-italic' ><small class='text-muted'>Date Born:&nbsp;</small><small>{{ schadmin.date_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Country Born:&nbsp;</small><small>{{ schadmin.country_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Nationality:&nbsp;</small><small>{{ schadmin.nationality|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Passport Number:&nbsp;</small><small>{{ schadmin.passport_number }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Address:&nbsp;</small><small>{{ schadmin.address|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Skills:&nbsp;</small><small>{{ schadmin.skills|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>created at:&nbsp;</small><small>{{ schadmin.created_at|timesince }} ago</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>created by:&nbsp;</small><small>{{ schadmin.created_by }}</small></p>
+                    <br>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update at:&nbsp;</small><small>{{ schadmin.updated_at|timesince }} ago</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update by:&nbsp;</small><small>{{ schadmin.updated_by }}</small></p>
+                </blockquote>
+            </div>
+        </div>
+    </div> 
+
+</div>
+{% endblock %}

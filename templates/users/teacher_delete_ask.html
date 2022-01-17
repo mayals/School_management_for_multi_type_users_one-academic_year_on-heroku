@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+    <div class="container-fluid mt-5 mb-5"> 
+        <div class="card">
+            <div class="card-header">
+                <i class="text-warning fas fa-exclamation-triangle"></i>
+                Warning
+            </div>
+            <div class="card-body p-5">
+                <p class="card-text pt-2 pb-5">Are you sure you want to delete <strong>{{teacher.get_teacher_full_name|title}}</strong> register from database ?</p> 
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'users:teacher_delete' teacher_username=teacher.given_username %}" >Yes, i am sure to delete </a>
+                <a class="btn btn-outline-secondary btn-sm"  href="{% url 'listings:teacher_list' %}">Cancel</a>
+            </div>
+        </div>    
+   </div>
+
+  {% endblock content %}  

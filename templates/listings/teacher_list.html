@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+    <div class="container-fluid">
+      
+        <ol class="breadcrumb mb-4 mt-5">
+            <li class="breadcrumb-item active">Teacher</li>
+        </ol>
+      
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                Teachers Table
+            </div>
+            {% if request.user.is_authenticated and request.user.schooladmin.is_schadmin %}
+                <div class='ml-4 mt-3 '>
+                    <a class='btn btn-sm btn-info'  href="{% url 'users:teacher_signup' %}"><i class="fas fa-user-plus"></i></a>
+                </div>
+            {% endif %}
+
+
+            <div class='row p-3'>
+                <div class="col-sm-12 col-md-12 float-right">
+                    <form  action="{% url 'listings:teacher_list' %}" method="GET" class="d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0 float-right">
+                        <div class="input-group">
+                            <label class='col-form-label'><small>Search for Teacher:&nbsp;</small></label>
+                            <input name="sch_ttfstname"  type="text" class="form-control form-control-sm"  placeholder="First Name..."/>
+                            <input name="sch_ttlstname"  type="text" class="form-control form-control-sm"  placeholder="Last Name..."/>
+                            <input name="sch_ttusername" type="text" class="form-control form-control-sm"  placeholder="Username..."/>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-sm btn-dark"><span style='font-size:0.8rem;'><i class="fas fa-search"></i></span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                        
+                                <th>Age</th>
+                                <th>Mobile</th>
+                                <th>Created date</th>
+                                {% if request.user.is_authenticated and request.user.schooladmin.is_schadmin %}
+                                <th>Action</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                
+                                <th>Age</th>
+                                <th>Mobile</th>
+                                <th>Created date</th>
+                                {% if request.user.is_authenticated and request.user.schooladmin.is_schadmin %}
+                                <th>Action</th>
+                                {% endif %}
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for teacher in teachers %}
+                            <tr>
+                                <td><a href="{% url 'listings:teacher_detail' teacher_username=teacher.given_username %}">{{teacher.get_teacher_full_name|title}}</a></td>
+                                <td>{{teacher.given_username}}</td>
+                              
+                                <td>{{teacher.get_teacher_age}}</td>
+                                <td>{{teacher.mobile}}</td>
+                                <td>{{teacher.created_at|timesince }} ago</td>
+                                {% if request.user.is_authenticated and request.user.schooladmin.is_schadmin %}
+                                    <td>
+                                        <a class="btn btn-info btn-sm  btn-circle m-1" href="{% url 'users:teacher_edit' teacher_username=teacher.given_username %}"><i class="far fa-edit"></i></a>
+                                        <a class="btn btn-danger btn-sm btn-circle m-1" href="{% url 'users:teacher_delete_ask' teacher_username=teacher.given_username %}"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                                <p class='text-danger'>Sorry no teacher in this table</p>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+
+                    <!-- pagination-->
+                    {% if teachers.has_other_pages %}
+                        <div>
+                            <nav aria-label="Page navigation conatiner"></nav>
+                                <ul class="pagination pagination-sm justify-content-center">
+                                    {% if students.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ teachers.previous_page_number }}">
+                                                &laquo; Previous 
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page_number in teachers.paginator.page_range %}
+                                        {% if page_number == teachers.number %}
+                                            <li  class="page-item active">
+                                                <span class="page-link">{{ page_number }}
+                                                    <span class="sr-only">(current)</span>
+                                                </span>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if teachers.has_next %}
+                                        <li class="page-item" >
+                                            <a class="page-link" href="?page={{ teachers.next_page_number }}">
+                                                Next &raquo;
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endif %}
+                    <!-- pagination end-->
+
+
+                </div>
+            </div>
+        </div>
+    
+         
+        
+    
+    </div> 
+    
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+    <h3 class="mt-4">{{title|title}}</h3>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">{{sub_title|title}}</li>
+    </ol>
+
+
+    <div class='mb-5 container col-md-6 offset-md-3'>
+        <form method="POST"  enctype="multipart/form-data"   novalidate>
+            {% csrf_token %}
+
+            {%  include 'includes/form_grade.html' %}
+
+            
+            <div class='btn-group'>
+                <button type="submit"  class="btn btn-info">Edit</button>
+               
+            </div>
+        </form>     
+    </div>
+
+</div>
+{% endblock content %}
+
+

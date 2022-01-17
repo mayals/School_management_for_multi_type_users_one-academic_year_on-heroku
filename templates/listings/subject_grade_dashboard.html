@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+<div class="container-fluid">
+    <div class="card-header mt-3">
+        <i class="fas fa-layer-group"></i>
+                Grades Subjects Mark
+    </div>
+
+
+    <div class="row mt-3 mb-3 ">
+        {% for grade in grades  %}
+
+            <div class="col-sm-4">
+                <div class="card m-1  bg-darkblue">
+                    <div class="card-body text-white">
+                            Mark
+                            <h5 class="card-title">{{ grade.name }}</h5> 
+
+                            {% for subject in grade.get_subjects_for_grade %}  
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <span class='text-white  bg-secondary mt-2 mb-2 p-1'><strong>{{subject.title|title}}</strong></span>
+                                <a type="button" class="btn btn-sm btn-dark text-white mt-2 mb-2 p-1 mr-2" href="{% url 'listings:subject_mark_student_list' grade_slug=grade.slug subject_slug=subject.slug %}"><i class="fas fa-angle-double-right"></i></a>
+                            </div>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+
+ 
+{% endblock %} 

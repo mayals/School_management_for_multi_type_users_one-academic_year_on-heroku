@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+    <h4 class="mt-4">{{ student.get_student_full_name|title }}&nbsp;&nbsp;<span class="badge badge-warning">{{student.grade}}</span></h4>
+    
+    {% if request.user.student.is_student or request.user.parent.is_parent %}
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">{{ student.get_student_full_name|title }}</li>
+    </ol>
+    {% else %}
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><a href="{% url 'listings:student_list' %}">Students&nbsp;</a>  / {{ student.get_student_full_name|title }}</li>
+    </ol>
+    {% endif %}
+
+    <div class='row mb-3 mt-1'>
+        <div class='col-md-2 col-sm-12'>
+            {% if student.user.imageuser.image %}
+                <img src="{{student.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}"> 
+            {% else %}
+                <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}">
+            {% endif %}
+        </div>
+    </div>
+
+
+
+    <div class='mt-5 mb-5'>
+        <div class="card bg-lightbrown2">
+            <div class="card-header">
+                <i class="far fa-comment"></i>&nbsp;Personal Message from teachers to you   
+            </div>
+            
+            {% for mes in message_teacher_to_student %}
+            <div class='b-2  m-3'>        
+            <div class="card-body">
+                <h5 class="card-title">{{ mes.message_subject }}</h5>
+                <small><p class="card-subtitle mb-2 text-muted"> From Teacher:&nbsp;<strong>{{mes.teacher.get_teacher_full_name|title}}</strong>  <br>{{mes.created_at|timesince}}&nbsp;ago </p></small>
+                <p class="card-text">{{mes.message_text}}</p>  
+            </div>
+            </div>
+            {% empty %}
+            <div class='b-2  m-3'>        
+            <div class="card-body">
+                <li> No Messages from teachers </li>
+            </div>
+            </div>    
+            {% endfor %}    
+            
+        </div>
+    </div>
+
+
+    <div class='mt-5 mb-5'>
+        <div class="card bg-ligh222">
+            <div class="card-header">
+                <i class="far fa-comments"></i>&nbsp;Message from teachers to all students in Grade {{ grade.name|title }} ..
+            </div>
+            
+            {% for mes in message_teacher_to_grade %}
+            <div class='b-2  m-3'>        
+            <div class="card-body">
+                <h5 class="card-title">{{ mes.message_subject }}</h5>
+                <small><p class="card-subtitle mb-2 text-muted"> From Teacher:&nbsp;<strong>{{mes.teacher.get_teacher_full_name|title}}</strong>  <br>{{mes.created_at|timesince}}&nbsp;ago </p></small>
+                <p class="card-text">{{mes.message_text}}</p>  
+            </div>
+            </div>
+            {% empty %}
+            <div class='b-2  m-3'>        
+            <div class="card-body">
+                <li> No Messages from teachers to your grade {{ grade.name|title }} .. </li>
+            </div>
+            </div>    
+            {% endfor %}    
+            
+        </div>
+    </div>
+    
+
+</div>
+{% endblock %}

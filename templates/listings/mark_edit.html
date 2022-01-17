@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+
+
+
+<!-- https://pypi.org/project/django-bootstrap-datepicker-plus/  -->
+<!-- https://monim67.github.io/django-bootstrap-datepicker-plus/configure/ -->
+<!-- this is tags for django-bootstrap-datepicker-plus -->
+{% load bootstrap4 %}                     {# import bootstrap4 #}
+{% bootstrap_css %}                       {# Embed Bootstrap CSS #}
+{% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+{{ form_mk.media }}                         {# Adds date-picker required JS and CSS #}  
+<!---->   
+
+
+
+
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+    <h3 class="mt-4">{{title|title}}</h3>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">{{sub_title|title}}</li> 
+        
+    </ol>
+    
+    <div class='border p-2 mt-3 mb-3'>
+        <p>for Student :<strong>{{student.get_student_full_name}}</strong></p>
+        <p>for subject :<strong>{{subject.get_subject_full_title}}</strong></p>
+    </div> 
+    
+    
+    <div class='mb-5 container col-md-6 offset-md-3'>
+        <form method="POST"  enctype="multipart/form-data"  action="." novalidate>
+            {% csrf_token %}
+
+            {%  include 'includes/form_mark.html' %}
+
+            
+            <div class='btn-group'>
+                <button type="submit"  name ="saveandcontinue" class="btn btn-info">edit</button>
+              
+            </div>
+        </form>     
+    </div>
+
+</div>
+{% endblock content %}
+
+ 

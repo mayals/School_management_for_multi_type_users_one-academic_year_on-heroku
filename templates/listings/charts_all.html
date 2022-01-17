@@ -1,0 +1,193 @@
+<!-- https://www.chartjs.org/docs/latest/getting-started/    -->
+
+{% extends 'base.html' %}
+{% block content %}
+
+<main>
+        <div class="container-fluid">
+            <h5 class="mt-4">Charts</h5>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Charts</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                   The charts below have been established for school management.
+                </div>
+            </div>
+<!---------------------------------------------------------------->
+            <!-- Area Chart -->
+            <div class="card mb-5">
+                <div class="card-header">
+                    <i class="fas fa-chart-area mr-1"></i>
+                    Area Chart <b>Grade</b> vs <b>Number of Students</b>
+                </div>
+                <div class="card-body">
+                    <canvas id="AreaChart" width="100%" height="100"></canvas>
+                </div>
+                <div class="card-footer small text-muted">Updated at {% for gr in grades_last_updated %}{{gr.updated_at }}{% endfor %}</div>
+            </div>
+    
+ 
+            
+            <div class="row">
+<!---------------------------------------------------------------->
+                <!--  Bar Chart -->
+                <div class="col-lg-6">
+                    <div class="card mb-5">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar mr-1"></i>
+                            Bar Chart <b>Teacher</b> vs <b>Age</b>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="BarChart" width="100%" height="100"></canvas>
+                        </div>
+                        <div class="card-footer small text-muted">Updated at {% for tch in teachers_last_updated %}{{tch.updated_at }}{% endfor %}</div>
+                    </div>
+                </div>
+<!---------------------------------------------------------------->
+                <!--  Pie Chart -->
+                <div class="col-lg-6">
+                    <div class="card mb-5">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Doughnut Chart <b>Student</b> vs <b>Age</b>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="PieChart" width="100%" height="100"></canvas>
+                        </div>
+                        <div class="card-footer small text-muted">Updated at {% for st in students_last_updated %}{{st.updated_at }}{% endfor %}</div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+    </main>
+
+
+
+
+<!---------------------------------------------------------------->
+<!-- https://www.chartjs.org/docs/latest/getting-started/    -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!---------------------------------------------------------------->
+<!-- scripts for id="AreaChart" -->
+<script>
+    const grade_names ={{grade_names|safe}};
+
+    const data_AreaChart = {
+                            labels: grade_names,
+                            datasets: [{
+                                        label: 'Numbers of Students',
+                                        backgroundColor: 'rgb(255, 99, 132)',
+                                        borderColor: 'rgb(255, 99, 132)',
+                                        data:{{grade_students_count|safe}},
+                                        }]
+                           };
+
+    const config_AreaChart = {
+                    type: 'line',
+                    data: data_AreaChart,
+                    options: {}
+                    };
+
+</script>
+<!-------------------------------->
+<script>
+    const AreaChart = new Chart(
+                            document.getElementById('AreaChart'),
+                            config_AreaChart
+                             );
+</script>
+<!-- END OF AreaChart-->
+
+
+<!---------------------------------------------------------------->
+<!---------------------------------------------------------------->
+<!---------------------------------------------------------------->
+
+
+<!-- Bar Chart -->
+<script>
+    const teacher_names ={{teacher_names|title|safe}};
+
+    const data_BarChart  = {
+                            labels: teacher_names,
+                            datasets: [{
+                                        label: "Age(year)",
+                                        barPercentage: 0.5,
+                                        barThickness: 40,
+                                        maxBarThickness: 50,
+                                        minBarLength: 2,
+                                        backgroundColor: ["#ffd54f"],
+                                        borderColor: "rgba(2,117,216,1)",
+                                        data:{{teacher_ages|safe}},
+                                        }]
+                            };
+
+    const config_BarChart = {
+                type: 'bar',
+                data: data_BarChart,
+                options: {
+                        scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                                }
+                        },
+                    };
+</script>
+ 
+
+<script>
+    const BarChart = new Chart(
+                            document.getElementById('BarChart'),
+                            config_BarChart
+                            );
+</script>
+<!-- end of Bar Chart -->
+
+<!---------------------------------------------------------------->
+<!---------------------------------------------------------------->
+<!---------------------------------------------------------------->
+<!---------------------------------------------------------------->
+
+
+<!-- Pie Chart -->
+<script>
+
+    var config_PieChart = {
+                            type: 'doughnut',
+                            <!-- type: 'pie',-->
+                            data: {
+                                    datasets: [{
+                                            data: {{student_ages|safe}},
+                                            backgroundColor: ['rgba(63, 81, 181, 0.5)',
+                                                              'rgba(77, 182, 172, 0.5)',
+                                                              'rgba(66, 133, 244, 0.5)',
+                                                              'rgba(156, 39, 176, 0.5)',
+                                                              'rgba(233, 30, 99, 0.5)',
+                                                              'rgba(66, 73, 244, 0.4)',
+                                                              'rgba(66, 133, 244, 0.2)'],
+                                            label: 'student age'
+                                            }],
+                                    labels: {{student_names|title|safe}}
+                                },
+                            options: {
+                                responsive: true
+                                    }
+                        };
+
+    window.onload = function() {
+        var ctx = document.getElementById('PieChart').getContext('2d');
+        window.PieChart = new Chart(ctx, config_PieChart);
+    };
+
+</script>
+<!-- end of Pie Chart -->
+
+{% endblock %}

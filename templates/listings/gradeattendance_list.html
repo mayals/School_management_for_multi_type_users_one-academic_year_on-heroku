@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+    <div class="card-header  mb-5">
+        <i class="fas fa-table"></i>
+        {{title|title}} <span class="p-1 badge badge-info">{{ grade.name|title}}</span>
+    </div>
+
+
+            {% for  s_att in gradeattendances %}
+            <div class='shadow-lg p-3 mb-5 bg-white rounded' >
+                <div>
+                    <b>{{ s_att.att_date }}</b>/ added by Teacher: {{s_att.created_by|title}}
+                </div>
+                <div class='card-body'>    
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-sm" id="dataTable" width="50%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th> Student Full Name</th>
+                                        <th>Student Detail</th>
+                                        <th>Parent</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                    <th> Student Full Name</th>
+                                    <th>Student Detail</th>
+                                    <th>Parent</th>
+                                    </tr>
+                                </tfoot>
+                                
+                                <tbody>
+                                    <div class="row">
+                                  
+                                            {% for stud in all_student %}
+                                           
+                                               {% if stud in s_att.students.all  %}  
+                                                <tr>
+                                                    <td class='text-success'>{{stud.get_student_full_name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><i class="fas fa-user-check"></i></span></td>
+                                                    <td><a href="{% url 'listings:student_detail' student_username=stud.given_username %}" class='btn btn-sm btn-success'><i class="fas fa-angle-double-right"></i></a></td>
+                                                    <td>
+                                                        {% for parent in parents %}
+                                                        {% for  stude  in parent.students.all  %}
+                                                            {% if stude == stud  %}
+                                                               <a href="{% url 'listings:parent_detail' parent_username=parent.given_username %}"> {{ parent.get_father_full_name }}</a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% endfor%}
+                                                    </td>
+                                                </tr>
+                                                {% else %}
+                                                <tr>
+                                                    <td class='text-danger'>{{stud.get_student_full_name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><i class="fas fa-user-alt-slash"></i></span></td>  
+                                                    <td><a href="{% url 'listings:student_detail' student_username=stud.given_username %}" class='btn btn-sm btn-danger'><i class="fas fa-angle-double-right"></i></a></td>
+                                                    <td>
+                                                        {% for parent in parents %}
+                                                        {% for  stude  in parent.students.all  %}
+                                                            {% if stude == stud  %}
+                                                               <a href="{% url 'listings:parent_detail' parent_username=parent.given_username %}"> {{ parent.get_father_full_name }}</a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% endfor%}
+                                                    </td>
+                                                </tr>
+                                                {% endif %}
+                                            {% empty %}
+                                                    <p class='text-danger'>Sorry no attedance Student in this table</p>    
+                                            {% endfor %}
+                                      
+                                    </div>
+                                </tbody>
+                            </table>
+                        </div>    
+                </div>
+            </div>
+            
+            {% empty %}
+            <p class='m-5 p-5 text-secondary'> No attendance table for this grade till now!<p>
+            {% endfor %}
+            
+{% endblock %}
+
+                         

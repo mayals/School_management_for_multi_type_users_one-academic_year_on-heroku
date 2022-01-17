@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+    <div class="container-fluid">
+      
+        <ol class="breadcrumb mb-4 mt-5">
+            <li class="breadcrumb-item active">Users</li>
+        </ol>
+      
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                Users Table
+            </div>
+            
+            
+            <div class='row p-3'>
+                <div class="col-sm-12 col-md-12 float-right">
+                    <form  action="{% url 'listings:user_list' %}" method="GET" class="d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0 float-right">
+                        <div class="input-group">
+                            <label class='col-form-label'><small>Search for user:&nbsp;</small></label>
+                            <input name="sch_ufstname"  type="text" class="form-control form-control-sm"  placeholder="First Name..."/>
+                            <input name="sch_ulstname"  type="text" class="form-control form-control-sm"  placeholder="Last Name..."/>
+                            <input name="sch_uusername" type="text" class="form-control form-control-sm"  placeholder="Username..."/>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-sm btn-dark"><span style='font-size:0.8rem;'><i class="fas fa-search"></i></span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Username</th>
+                                <th>is_superuser</th>
+                                <th>is_active</th>
+                                <th>Created date</th>         
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                 <th>Image</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Username</th>
+                                <th>is_superuser</th>
+                                <th>is_active</th>
+                                <th>Created date</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                {% if user.imageuser.image %}
+                                <td>
+                                    <img src="{{user.imageuser.image.url}}" style="hight:70px;width:70px;" class="card-img img-thumbnail" alt="{{user.first_name}}">
+                                </td> 
+                                {% else %}
+                                <td>
+                                    <img src="{% static 'image/default_user.jpg' %}" style="hight:70px;width:70px;" class="card-img img-thumbnail" alt="{{user.first_name}}">
+                                </td>
+                                {% endif %} 
+                                <td>{{user.first_name|title}}</td>
+                                <td>{{user.last_name|title}}</td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.is_superuser}}</td> 
+                                <td>{{user.is_active}}</td>
+                                <td>{{user.date_joined|timesince }} ago</td>
+                            </tr>
+                            {% empty %}
+                                <p class='text-danger'>Sorry no user in this table</p>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+
+                    <!-- pagination-->
+                    {% if users.has_other_pages %}
+                        <div>
+                            <nav aria-label="Page navigation conatiner"></nav>
+                                <ul class="pagination pagination-sm justify-content-center">
+                                    {% if students.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ students.previous_page_number }}">
+                                                &laquo; Previous 
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page_number in users.paginator.page_range %}
+                                        {% if page_number == users.number %}
+                                            <li  class="page-item active">
+                                                <span class="page-link">{{ page_number }}
+                                                    <span class="sr-only">(current)</span>
+                                                </span>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if users.has_next %}
+                                        <li class="page-item" >
+                                            <a class="page-link" href="?page={{ users.next_page_number }}">
+                                                Next &raquo;
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endif %}
+                    <!-- pagination end-->
+
+
+                </div>
+            </div>
+        </div>
+        
+</div>    
+{% endblock %}

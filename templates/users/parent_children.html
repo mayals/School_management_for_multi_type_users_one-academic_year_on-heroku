@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+       {% if academicyear %}
+           <h5 class='text-secondary font-italic'>{{academicyear.name }}</h5>
+        {% endif %} 
+
+    <h4 class="mt-4">{{ parent.get_father_full_name|title }}&nbsp;&nbsp;<span class="badge badge-warning">{{father.get_father_full_name|title}}</span></h4>
+
+        {% if request.user.student.is_student or request.user.parent.is_parent %}
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">{{ parent.get_father_full_name|title }}</li>
+        </ol>
+        {% else %}
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active"><a href="{% url 'listings:parent_list' %}">Parents&nbsp;</a>  / {{ parent.get_father_full_name|title }}</li>
+        </ol>
+        {% endif %}
+           
+    
+    
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12  mb-5">
+                <div class="card card-box">
+                    <div class="card-header text-center">
+                        Parent of sudents :
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                                <div class='row'>
+                            {% for student in parent.students.all %}
+                               
+                           
+                                <div class=' col-sm-12 col-md-4 mt-1 mb-1'>
+                                    <a href="{% url 'users:parent_student_dashboard' student_username=student.given_username %}" class='btn btn-light'>
+                                        <img src="{{student.user.imageuser.image.url}}" style="width:100px;high:100px;" class="card-img" alt="{{student.get_student_full_name}}">
+                                        {{ student.get_student_full_name|title}}
+                                    </a>
+                                </div>
+                             
+                              
+                            {% endfor %}
+                               </div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+    <h5 class="mt-4">Parent Profile</h5>
+
+
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active"> {{ parent.get_father_full_name|title }}</li>
+        </ol>   
+    
+    
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12  mb-5">
+                <div class="card card-box">
+                    <div class="card-header text-center">
+                        Parent of sudents :
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                                <div class='row'>
+                            {% for student in parent.students.all %}
+                               
+                           
+                                <div class=' col-sm-12 col-md-4 mt-1 mb-1'>
+                                    <a href="{% url 'listings:student_detail' student_username=student.given_username %}" class='btn btn-light'>
+                                        <img src="{{student.user.imageuser.image.url}}" style="width:80px;high:80px;" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}">
+                                        {{ student.get_student_full_name}}
+                                    </a>
+                                </div>
+                             
+                              
+                            {% endfor %}
+                               </div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+        
+        <div >
+            <h5 class="card-title">Parent Informations</h5>
+        </div>    
+                    
+    
+        <div class="row">
+
+            <div class="col-sm-6 col-md-6  mb-5">
+                <div class="card card-box">
+                    <div class="card-header">
+                        Father Information
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p class='card-text font-italic'><small class='text-muted'>Father Full Name:&nbsp;</small><small>{{ parent.get_father_full_name|title }}</small></p>
+                            <p class='card-text font-italic'><small class='text-muted'>Father First Name:&nbsp;</small><small>{{ parent.father_f_name|title }}</small></p>
+                            <p class='card-text font-italic'><small class='text-muted'>Father Second Name:&nbsp;</small><small>{{ parent.father_l_name|title }}</small></p>
+                            <p class='card-text font-italic' ><small class='text-muted'>Father Email:&nbsp;</small><small>{{ parent.father_email|title }}</small></p>
+                            <p class='card-text font-italic' ><small class='text-muted'>Father Mobile:&nbsp;</small><small>{{ parent.father_mobile }}</small></p>
+                            <p class='card-text font-italic' ><small class='text-muted'>Father Nationality:&nbsp;</small><small>{{ parent.father_nationality|title }}</small></p>
+                            <p class='card-text font-italic' ><small class='text-muted'>Father Passport Number:&nbsp;</small><small>{{ parent.father_passport_no }}</small></p>
+                            <p class='card-text font-italic' ><small class='text-muted'>Father Address:&nbsp;</small><small>{{ parent.father_address }}</small></p>
+                        </blockquote>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6  mb-5">
+                <div class="card card-box">
+                    <div class="card-header">
+                        Mother Information
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p class='card-text font-italic' ><small class='text-muted'>Mother Full Name:&nbsp;</small><small>{{ parent.mother_fl_name|title }}</small></p>
+                            <p class='card-text font-italic' ><small class='text-muted'>Mother Mobile:&nbsp;</small><small>{{ parent.mother_mobile|title }}</small></p>
+                        </blockquote>
+                    </div>
+                </div>
+            </div> 
+                    
+        </div>
+
+
+        
+
+
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12  mb-5">
+                <div class="card card-box">
+                    <div class="card-header text-center">
+                        Parent Note about their children
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p class='card-text font-italic' ><small>{{ parent.note|title }}</small></p>  
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        
+
+        <div>
+            <div class="col-sm-12 col-md-6  mb-5">    
+                <blockquote>
+                   
+                    <p>This parent informations </p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add at:&nbsp;</small><small>{{ parent.created_at }} ago</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add by:&nbsp;</small><small>{{ parent.created_by }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update at:&nbsp;</small><small>{{ parent.updated_at  }} ago</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update by:&nbsp;</small><small>{{ parent.updated_by }}</small></p>
+                </blockquote>
+            </div>
+        </div>
+  
+               
+    <div class='row'>   
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                    Lorem ipsum
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+               Lorem ipsum
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 mb-30">
+            <div class="card card-box">
+                <div class="card-header">
+                    Lorem ipsum
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+{% endblock %}

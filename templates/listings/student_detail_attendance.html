@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+    <h4 class="mt-4">{{ student.get_student_full_name|title }}&nbsp;&nbsp;<span class="badge badge-warning">{{student.grade}}</span></h4>
+    
+    {% if request.user.student.is_student or request.user.parent.is_parent %}
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">{{ student.get_student_full_name|title }}</li>
+        </ol>
+    {% else %}
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active"><a href="{% url 'listings:student_list' %}">Students&nbsp;</a>  / {{ student.get_student_full_name|title }}</li>
+        </ol>
+    {% endif %}
+    
+
+    <div class='row mb-3 mt-1'>
+        <div class='col-md-2 col-sm-12'>
+            {% if student.user.imageuser.image %}
+                <img src="{{student.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}"> 
+            {% else %}
+                <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}">
+            {% endif %}
+        </div> 
+        <div class='col-md-8 col-sm-12'>
+            <div class="card-body">
+                <div class="table-responsive">
+                
+                    <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class='text-center text-danger'> Count Absence</th>
+                                <th class='text-center text-success'> Count Attendance</th>
+                                <th class='text-center text-secondary'>Count of All Checks</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th class='text-center text-danger'> Count Absence</th>
+                                <th class='text-center text-success'> Count Attendance</th>
+                                <th class='text-center text-secondary'>Count of All Checks</th>
+                            </tr>
+                        </tfoot>
+                          
+                        <tbody>
+                            <tr> 
+                                <td class='text-center text-danger'><strong>{{count_of_absence}}</strong></td>
+                                <td class='text-center text-success'><b>{{stud_att_count}}</b></td>
+                                <td class='text-center text-secondary'><strong>{{all_att_count}}</strong></td>  
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+                       
+            </div> 
+        </div>
+
+    </div>
+
+               
+    <div class="card mb-4">
+
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Attendance Table
+        </div>
+
+        
+
+        <div class="card-body">
+            <div class="table-responsive">
+            
+                <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class='text-center'>Date of Attendance</th>
+                            <th class='text-center'>Status</th>
+                            <th>checked by Teacher</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class='text-center'>Date of Attendance</th>
+                            <th class='text-center'>Status</th>
+                            <th>checked by Teacher</th>
+                        </tr>
+                    </tfoot>
+                    
+                    <tbody>
+                        {% for check in all_att %}
+                            <tr> 
+                                
+                                <td class='text-center'>{{check.att_date}}</td>
+                                
+                                <td class='text-center'>
+                                    {% for st_a in stud_att %}
+                                        {% if st_a.att_date == check.att_date %}
+                                            {% if st_a.att_date  == check.att_date %}
+                                                <span class='text-success'><i class="fas fa-user-check"></i></span>
+                                            {% endif %}    
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+
+                                <td>{{check.created_by|title}}</td> 
+ 
+                            </tr>
+                        {% endfor %}         
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+                
+                
+           
+    
+
+
+</div>
+{% endblock %}

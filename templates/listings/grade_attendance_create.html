@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+
+
+<!-- https://pypi.org/project/django-bootstrap-datepicker-plus/  -->
+<!-- https://monim67.github.io/django-bootstrap-datepicker-plus/configure/ -->
+<!-- this is tags for django-bootstrap-datepicker-plus -->
+{% load bootstrap4 %}                     {# import bootstrap4 #}
+{% bootstrap_css %}                       {# Embed Bootstrap CSS #}
+{% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+{{ form_att.media }}                         {# Adds date-picker required JS and CSS #}  
+<!---->   
+
+
+
+
+
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+    
+     
+    
+    
+    <div class="card-header mt-5 mb-1">
+        <i class="fas fa-table mr-1"></i>
+        <span  class='font-italic'>{{title|title}}</span><strong>&nbsp;/&nbsp;{{grade.name|title}}</strong>
+    </div>
+
+    <div>
+    <small>
+        <ul class='text-danger'>
+            <li>plese press <b>ctrl</b> keyboard key and choice from list only attendance students in {{grade.name|title}} for your selected date.</li>
+        </ul>
+    </small>
+    </div>
+
+
+    <div class='mb-5 container col-md-6 offset-md-3 mt-5'>
+        <form method="POST"  enctype="multipart/form-data"  action="." novalidate>
+            {% csrf_token %}
+
+          {%  include 'includes/form_attendance.html' %}
+
+
+            
+            <div class='btn-group'>
+                <button type="submit"  class="btn btn-info">Save</button>
+          
+            </div>
+        </form>     
+    </div>
+
+</div>
+{% endblock content %}
+

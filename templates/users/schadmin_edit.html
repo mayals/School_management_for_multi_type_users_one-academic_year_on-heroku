@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+<!-- https://pypi.org/project/django-bootstrap-datepicker-plus/  -->
+<!-- https://monim67.github.io/django-bootstrap-datepicker-plus/configure/ -->
+<!-- this is tags for django-bootstrap-datepicker-plus -->
+{% load bootstrap4 %}                     {# import bootstrap4 #}
+{% bootstrap_css %}                       {# Embed Bootstrap CSS #}
+{% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+{{ form2.media }}                         {# Adds date-picker required JS and CSS #}  
+<!----> 
+
+
+
+{% include 'includes/messages.html' %}
+
+<br><br>
+
+
+<br><br>
+<h5 class='text-center'>Edit: School Admin UserCreateForm </h5>
+
+
+
+
+<div class='mt-5 container col-md-6 offset-md-3'>
+    <form method="POST" enctype="multipart/form-data"  novalidate>
+        {% csrf_token %}
+
+        {%  include 'includes/form_schadmin.html' %}
+
+        <br>
+        <button class='btn btn-primary' type='submit'>Sign Up</button>
+    </form>     
+</div>
+
+{% endblock content %}
+
+

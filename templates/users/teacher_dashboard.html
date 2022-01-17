@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block content %}
+ {% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+        {% if academicyear %}
+           <h5 class='text-secondary font-italic'>{{academicyear.name }}</h5>
+        {% endif %} 
+
+
+        <h5 class="mt-4"> Teacher Dasboard</h5>
+        
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Teacher Dasboard</li>
+        </ol>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <i class="fas fa-cogs"></i>
+                        &nbsp;School system Manager
+                </div> 
+                <div class="card-body">   
+                <div class='row'>    
+                    <div class="col-xl-6 col-md-6">
+                        <div class="card bg-secondary text-white mb-4">
+                            <div class="card-body text-center"><strong>Grade</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-secondary" href="{% url 'listings:grade_list' %}"><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_grades.count }}</a>
+                         
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="col-xl-6 col-md-6">
+                        <div class="card bg-info text-white mb-4">
+                            <div class="card-body text-center"><strong>Subject</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-info text-white" href="{% url 'listings:subject_list' %}"><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_subjects.count }}</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <i class="fas fa-users mr-1"></i>
+                        Users Manager
+                </div> 
+                <div class="card-body"> 
+                   
+                   
+                    <div class='row'>
+                        
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body text-center"><strong>School Admin</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-primary" href={% url 'listings:schadmin_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_schadmins.count }}</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card bg-info text-white mb-4">
+                                <div class="card-body text-center"><strong>Teacher</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-info" href={% url 'listings:teacher_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_teachers.count }}</span></a>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card bg-danger text-white mb-4">
+                                <div class="card-body text-center"><strong>Employee</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-danger" href='#'><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_employees.count }}</span></a> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> 
+                    
+                    
+
+                    <div class='row'>    
+
+                        <div class="col-xl-6 col-md-6">
+                            <div class="card bg-warning text-white mb-4">
+                                <div class="card-body text-center"><strong>Student</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-warning text-white" href={% url 'listings:student_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_students.count }}</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body text-center"><strong>Parent</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-success" href={% url 'listings:parent_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_parents.count }}</span></a> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <i class="fas fa-users mr-1"></i>
+                        Students Manager
+                </div> 
+                <div class="card-body"> 
+                    <div class='row'>
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card bg-info text-white mb-4">
+                                <div class="card-body text-center"><strong>Attendance</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-secondary" href="{% url 'listings:grade_dashboard' %}">&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a>
+                                           
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card bg-darkblue text-white mb-4">
+                                <div class="card-body text-center"><strong>Mark</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-dark" href={% url 'listings:subject_grade_dashboard' %}>&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a>
+      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card bg-orange text-white mb-4">
+                                <div class="card-body text-center"><strong>Payment</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-warning" href="#">&nbsp;Detail&nbsp;<i class="fas fa-angle-double-right"></i></a>
+      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock %}

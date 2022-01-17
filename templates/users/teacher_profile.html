@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+<h5 class="mt-4">{{ title }}&nbsp;&nbsp;</h5>
+
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active"><span><strong>{{ user.teacher.get_teacher_full_name|title }}</strong> profile</span></li>
+</ol>
+
+    <div class="card card-body mb-5">
+    <div class='mb-1'><small><span class="text-muted float-right">Last Login:&nbsp;&nbsp;{{user.last_login|timesince}} ago </span><small></div>
+        <div class='row'>
+            <div class="col-md-2 text-center">
+                {% if request.user.imageuser.image %}
+                    <img src="{{request.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{teacher.get_teacher_full_name}}">
+                {% else %}
+                    <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{teacher.get_teacher_full_name}}">
+                {% endif %}
+            <a  href="{% url 'users:image_user_update' user_username=user.username %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update Image</a>
+            </div>
+           
+            <div class="col-md-10">
+                <div class="card-header">
+                    <h5 class="card-title">Personal Informations</h5>
+                </div>    
+                <blockquote class="blockquote mb-0">
+                    <p class='card-text font-italic'><small class='text-muted'>Full Name:&nbsp;</small><small>{{ user.teacher.get_teacher_full_name|title }}</small></p>
+                    <p class='card-text text-info font-italic'><small class='text-muted'>username:&nbsp;</small><small><strong>{{ user.username}}</strong></small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>First Name:&nbsp;</small><small>{{ user.teacher.first_name|title }}</small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>Second Name:&nbsp;</small><small>{{ user.teacher.second_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Name:&nbsp;</small><small>{{ user.teacher.last_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Age:&nbsp;</small><small>{{ user.teacher.get_teacher_age }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Gender:&nbsp;</small><small>{{ user.teacher.gender|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Mobile:&nbsp;</small><small>{{ user.teacher.mobile }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Email:&nbsp;</small><small>{{ user.teacher.email }}</small></p>
+
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Date Born:&nbsp;</small><small>{{ user.teacher.date_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Country Born:&nbsp;</small><small>{{ user.teacher.country_born|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Nationality:&nbsp;</small><small>{{ user.teacher.nationality|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Passport Number:&nbsp;</small><small>{{ user.teacher.passport_number }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Address:&nbsp;</small><small>{{ user.teacher.address|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Skills:&nbsp;</small><small>{{ user.teacher.skills|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add at:&nbsp;</small><small>{{user.teacher.created_at }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Add by:&nbsp;</small><small>{{ user.teacher.created_by }}</small></p>
+                    <br>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Login:&nbsp;</small><small>{{ request.user.last_login }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update at:&nbsp;</small><small>{{ user.teacher.updated_at }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Update by:&nbsp;</small><small>{{ user.teacher.updated_by }}</small></p>
+                </blockquote>
+            </div>
+        </div>
+    </div> 
+
+    <div class='row'>   
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                    Grade
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                       <ul>
+                            {% for grade in user.teacher.grades.all %}
+                                <li>
+                                    <a href="{%  url 'listings:grade_detail'  grade_slug=grade.slug  %}">
+                                            {{ grade.name }}
+                                    </a>
+                                    <a href="{% url 'listings:grade_attendanc_create' grade_slug=grade.slug %}">
+                                        add attendace
+                                    </a>
+                                </li>
+                            {%empty %}
+                                <li>Sorry, no grade in {{ user.teacher.grade.name }}.</li>
+                            {% endfor %}  
+                        </ul> 
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4  mb-5">
+            <div class="card card-box">
+                <div class="card-header">
+                Subjects
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <ul>
+                            {% for subject in user.teacher.subjects.all %}
+                                <li><a href="{%  url 'listings:subject_detail'  subject_slug=subject.slug  %}">{{ subject.get_subject_full_title }}</a></li>
+                            {%empty %}
+                                <li>Sorry, no subject in {{ user.teacher.subjec.get_subject_full_title }}.</li>
+                            {% endfor %}  
+                        </ul> 
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 mb-30">
+            <div class="card card-box">
+                <div class="card-header">
+                    Salary
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ 
+</div>
+
+
+
+{% endblock content %}
+

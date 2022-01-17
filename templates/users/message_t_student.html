@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+    
+   
+    <div class="card-header mt-3 mb-3">
+        <i class="far fa-envelope"></i> &nbsp;{{title|title}}: &nbsp;<strong>{{student.get_student_full_name|title}}</strong>               
+    </div>
+
+
+    <div class='mb-5 container col-md-6 offset-md-3'>
+        <form method="POST"  novalidate>
+            {% csrf_token %}
+
+            {%  include 'includes/form_message_t_student.html' %}
+
+            
+            <div class='btn-group'>
+                <button type="submit"  class="btn btn-info">Send</button>   
+            </div>
+        </form>     
+    </div>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+    <div class="container-fluid mt-5 mb-5"> 
+
+    <ol class="breadcrumb mb-4 mt-5">
+            <li class="breadcrumb-item active">Parent Delete</li>
+    </ol>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="text-warning fas fa-exclamation-triangle"></i>
+                Warning
+            </div>
+            <div class="card-body p-5">
+                <p class="card-text pt-2 pb-5">Are you sure you want to delete <strong>{{parent.get_student_full_name|title}}</strong> register from database ?</p> 
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'users:parent_delete' parent_username=parent.given_username %}" >Yes, i am sure to delete </a>
+                <a class="btn btn-outline-secondary btn-sm"  href="{% url 'listings:parent_list' %}">Cancel</a>
+            </div>
+        </div>    
+   </div>
+
+  {% endblock content %}  

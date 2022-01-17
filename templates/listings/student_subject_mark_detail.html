@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% include 'includes/messages.html' %}
+
+    <h3>{{ student.get_student_full_name }}</h3><br>
+    <h3>{{ student.grade }}</h3><br>
+    <h3>{{ subject.title }}/{{subject.grade}} marks:</h3> <br>
+   
+
+
+   <h5>{{ student.get_student_full_name }} mark  {{ subject.title }} </h5>
+        <ul>
+            {% for mark in marks_for_student_subject %}
+                <li>{{ mark.exam_name }}-{{ mark.mark_value }}-{{ mark.full_value }} - {{mark.exam_date}} - {{ mark.created_at }}-{{ mark.updated_at }}</li>
+
+            {%empty %}
+                <li>Sorry, no mark in {{ subject.title }} .</li>
+            {% endfor %}  
+        </ul> 
+
+
+
+
+    
+
+
+   
+
+{% endblock %}

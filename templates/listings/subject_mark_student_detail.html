@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+    <h4 class="mt-4">{{ student.get_student_full_name|title }}&nbsp;&nbsp;<span class="badge badge-warning">{{student.grade}}</span></h4>
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><a href="{% url 'listings:student_list' %}">Students&nbsp;</a>  / {{ student.get_student_full_name|title }}</li>
+    </ol>
+
+    <div class='row mb-3 mt-1'>
+        <div class='col-md-2 col-sm-12'>
+            {% if student.user.imageuser.image %}
+                <img src="{{student.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}"> 
+            {% else %}
+                <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{student.get_student_full_name}}">
+            {% endif %}
+        </div>
+    </div>
+  
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-3">{{subject.title|title}}&nbsp;Marks</h5>
+        </div>
+           
+        <div class="card-body  bg-dark">
+            <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table mr-1"></i>
+                        Subject &nbsp;:&nbsp;<strong>{{ subject.get_subject_full_title|title }} </strong> Mark Table
+                    </div>
+
+
+                    {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                        <div class='ml-4 mt-3'>
+                            <a class='btn btn-sm btn-info'  href="{% url 'listings:mark_create' student_username=student.given_username  subject_slug=subject.slug %}"><i class="fas fa-plus-circle"></i></a>
+                        </div>
+                    {% endif %}
+
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                        
+                            <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Exam Name</th>
+                                        <th>Mark_Value</th>
+                                        <th>Full_Value</th>
+                                        <th>Exam_Date</th>
+                                        <th>Note</th>
+                                        <th>Created date</th>
+                                        {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                        <th>Action</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Exam Name</th>
+                                        <th>Mark_Value</th>
+                                        <th>Full_Value</th>
+                                        <th>Exam_Date</th>
+                                        <th>Note</th>
+                                        <th>Created date</th>
+                                        {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                        <th>Action</th>
+                                        {% endif %}
+                                    </tr>
+                                </tfoot>
+                                <p class='bg-warning'>&nbsp;{{subject.get_average_of_marks_for_subject}}</p>
+                               
+                           
+                         
+                                
+                                
+                                <tbody>
+                                    {% for mark in subject.get_marks_for_subject %}
+                                    <tr>
+                                        <td>{{mark.exam_name|title}}</a></td>
+                                        <td>{{mark.mark_value}}</td>
+                                        <td>{{mark.full_value}}</a></td> 
+                                        <td>{{mark.exam_date}}</td>
+                                        <td>{{mark.note}}</td>
+                                        <td>{{mark.created_at|timesince }} ago</td>
+                                        {% if request.user.is_authenticated and request.user.teacher.is_teacher %}
+                                            <td>
+                                                <a class="btn btn-info btn-sm  btn-circle m-1" href="{% url 'listings:mark_edit' student_username=student.given_username  subject_slug=subject.slug mark_id=mark.id %}"><i class="far fa-edit"></i></a>
+                                                <a class="btn btn-danger btn-sm btn-circle m-1" href="#"><i class="far fa-trash-alt"></i></a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% empty %}
+                                        <p class='text-danger'>Sorry no marks for this subject: <strong>{{subject.get_subject_full_title }}</strong> in this table</p>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+           
+{% endblock %}

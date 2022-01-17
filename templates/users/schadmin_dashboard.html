@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+<div class="container-fluid">
+
+
+    {% if academicyear %}
+       <h5 class='text-secondary font-italic'>{{academicyear.name }}</h5>
+    {% endif %}
+
+
+        <h5 class="mt-4">School Administrator </h5>
+       
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Administrator</li>
+        </ol>
+    
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <i class="fas fa-cogs"></i>
+                        &nbsp;School system Manager
+                </div>
+                
+                
+
+                <div class="card-body">   
+                <div class='row'>    
+                    <div class="col-xl-6 col-md-6">
+                        <div class="card bg-secondary text-white mb-4">
+                            <div class="card-body text-center"><strong>Grade</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-secondary" href="{% url 'listings:grade_list' %}"><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_grades.count }}</a>
+                                   <a type="button" class="btn btn-secondary text-white" href="{% url 'listings:grade_signup' %}"><i class="fas fa-plus"></i></i>&nbsp;Add</a> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="col-xl-6 col-md-6">
+                        <div class="card bg-info text-white mb-4">
+                            <div class="card-body text-center"><strong>Subject</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-info text-white" href="{% url 'listings:subject_list' %}"><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_subjects.count }}</a>
+                                    <a type="button" class="btn btn-info text-white" href="{% url 'listings:subject_signup' %}"><i class="fas fa-plus"></i></i>&nbsp;Add</a>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+    
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <i class="fas fa-users mr-1"></i>
+                        Users Manager
+                </div> 
+                <div class="card-body">   
+                <div class='row'> 
+                    <div class="col-xl-12 col-md-12">
+                            <div class="card bg-darkblue text-white mb-4">
+                                <div class="card-body text-center"><strong>All Users</strong></div>
+                                <div class="card-footer text-center">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-secondary" href="{% url 'listings:user_list' %}"><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_users.count }}</span></a>
+                                           
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>    
+                <div class='row'>    
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-primary text-white mb-4">
+                            <div class="card-body text-center"><strong>Teacher</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-primary" href={% url 'listings:teacher_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_teachers.count }}</a>
+                                    <a type="button" class="btn btn-primary" href={% url 'users:teacher_signup'  %}><i class="fas fa-user-plus"></i>&nbsp;Add</a>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-warning text-white mb-4">
+                            <div class="card-body text-center"><strong>Student</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-warning text-white" href={% url 'listings:student_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_students.count }}</a>
+                                    <a type="button" class="btn btn-warning text-white" href={% url 'users:student_signup'  %}><i class="fas fa-user-plus"></i>&nbsp;Add</a>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-success text-white mb-4">
+                            <div class="card-body text-center"><strong>Parent</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-success" href={% url 'listings:parent_list' %}><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">{{ all_parents.count }}</a>
+                                    <a type="button" class="btn btn-success" href={% url 'users:parent_signup' %}><i class="fas fa-user-plus"></i>&nbsp;Add</a>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-danger text-white mb-4">
+                            <div class="card-body text-center"><strong>Employee</strong></div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a type="button" class="btn btn-danger" href='#'><i class="far fa-eye"></i>&nbsp;View&nbsp;<span class="badge badge-light">0{{ all_employee.count }}</a>
+                                    <a type="button" class="btn btn-danger" href='#'><i class="fas fa-user-plus"></i>&nbsp;Add</a>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+            <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-users-cog mr-1"></i>
+                School Administrators Table
+            </div>
+            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Age</th>
+                                <th>Mobile</th>
+                                <th>Created date</th>
+                                <th>Is Staff ?</th>
+                                <th>Is Superuser ?</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Age</th>
+                                <th>Mobile</th>
+                                <th>Created date</th>
+                                <th>Is Staff ?</th>
+                                <th>Is Superuser ?</th>
+                                <th>Action</th>  
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for schadmin in schadmins %}
+                            <tr>
+                                <td><a href="{% url 'listings:schadmin_detail' schadmin_username=schadmin.get_schadmin_username %}">{{schadmin.get_schadmin_full_name|title}}</a></td>
+                                <td>{{schadmin.user.username}}</td>
+                                <td>{{schadmin.get_schadmin_age}}</td>
+                                <td>{{schadmin.mobile}}</td>
+                                <td>{{schadmin.created_at}}</td>
+                                <td>{{schadmin.is_staff}}</td>
+                                <td>{{schadmin.is_superuser}}</td>
+                                    <td>
+                                    {% if request.user.id == 1 %}
+                                        <a class="btn btn-info btn-sm  btn-circle m-1" href="#"><i class="far fa-edit"></i></a>
+                                        <a class="btn btn-danger btn-sm btn-circle m-1" href="#"><i class="far fa-trash-alt"></i></a>
+                                    {% else %}
+                                        <a class="disabled btn btn-info btn-sm  btn-circle m-1" href="#"><i class="far fa-edit"></i></a>
+                                        <a class="disabled btn btn-danger btn-sm btn-circle m-1" href="#"><i class="far fa-trash-alt"></i></a>
+                                    {% endif %}
+                                    </td>
+                            </tr>
+                            {% empty %}
+                                <p class='text-danger'>Sorry no administrator in this table</p>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+
+                    <!-- pagination-->
+                    {% if schadmins.has_other_pages %}
+                        <div>
+                            <nav aria-label="Page navigation conatiner"></nav>
+                                <ul class="pagination pagination-sm justify-content-center">
+                                    {% if schadmins.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ schadmins.previous_page_number }}">
+                                                &laquo; Previous 
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page_number in schadmins.paginator.page_range %}
+                                        {% if page_number == schadmins.number %}
+                                            <li  class="page-item active">
+                                                <span class="page-link">{{ page_number }}
+                                                    <span class="sr-only">(current)</span>
+                                                </span>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if schadmins.has_next %}
+                                        <li class="page-item" >
+                                            <a class="page-link" href="?page={{ schadmins.next_page_number }}">
+                                                Next &raquo;
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endif %}
+                    <!-- pagination end-->
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+   
+    </div>
+    <div>
+    
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'includes/messages.html' %}
+
+
+<div class="container-fluid">
+
+<h5 class="mt-4">{{ title }}&nbsp;&nbsp;</h5>
+
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active"><span>{{ user.first_name|title }}{{ user.last_name|title }}</span></li>
+</ol>
+
+    <div class="card card-body mb-5">
+    <div class='mb-1'><small><span class="text-muted float-right">Last Login👍:&nbsp;&nbsp;{{user.last_login|timesince}} ago </span><small></div>
+        <div class='row'>
+            <div class="col-md-2 text-center">
+                {% if request.user.imageuser.image %}
+                    <img src="{{request.user.imageuser.image.url}}" class="card-img img-thumbnail" alt="{{user.first_name}}">
+                {% else %}
+                    <img src="{% static 'image/default_user.jpg' %}" class="card-img img-thumbnail" alt="{{user.first_name}}">
+                {% endif %}
+            <!--<a  href="{% url 'users:image_user_update' user_username=user.username %}" class="btn btn-secondary btn-sm mt-1 mb-1">Update Image</a>-->
+            </div>
+           
+            <div class="col-md-10">
+                <div class="card-header">
+                    <h5 class="card-title">Personal Informations</h5>
+                </div>    
+                <blockquote class="blockquote mb-0">
+                    <p class='card-text font-italic'><small class='text-muted'>Full Name:&nbsp;</small><small>{{ user.first_name|title }}{{ user.last_name|title }}</small></p>
+                    <p class='card-text text-info font-italic'><small class='text-muted'>username:&nbsp;</small><small><strong>{{ user.username }}</strong></small></p>
+                    <p class='card-text font-italic'><small class='text-muted'>First Name:&nbsp;</small><small>{{ user.first_name|title }}</small></p>
+                    <p class='card-text font-italic' ><small class='text-muted'>Last Name:&nbsp;</small><small>{{ user.last_name|title }}</small></p>
+                    <hr>
+                    <p class='card-text font-italic' ><small class='text-muted'>Email:&nbsp;</small><small>{{ user.email }}</small></p>
+                </blockquote>
+            </div>
+        </div>
+    </div> 
+
+ 
+</div>
+
+{% endblock %}
