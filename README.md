@@ -4,7 +4,7 @@ this application is deployed on heroku :
 
 https://multi-type-users-school-manage.herokuapp.com/
 
-try admin username admin
+try admin username = admin
 
  admin password = admin12345678
     
