@@ -6,5 +6,5 @@ https://multi-type-users-school-manage.herokuapp.com/
 
 try admin username admin
 
-    admin password = admin12345678
+ admin password = admin12345678
     
