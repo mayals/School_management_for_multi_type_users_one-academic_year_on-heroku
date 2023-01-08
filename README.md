@@ -1,6 +1,6 @@
 # multi_type_users_school_management_for_one-academic_year_on-heroku
 
-this application is deployed on heroku :
+this application is deployed on heroku- now NOT AVAILABLE , because(Heroku marked free databases for deletion) :
 
 https://multi-type-users-school-manage.herokuapp.com/
 
